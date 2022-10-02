@@ -77,8 +77,15 @@ WSGI_APPLICATION = 'EMSApplication.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ems',
+        'USER':'root',
+        'PASSWORD':'Randika@1993',
+        'HOST':'localhost',
+        'PORT':'3306',
+        'OPTIONS':{
+            'sql_mode':'traditional',
+        }
     }
 }
 
