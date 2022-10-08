@@ -1,7 +1,7 @@
 {% extends "main/base.html" %}
 
 {% block pagetitle%}
-<h1 class="mt-2">Login</h1>
+<h1 class="mt-2">User Registration</h1>
 {% endblock %}
 
 
@@ -10,9 +10,7 @@
 {% block content %}
     <form action="" method="post" class="form-group">
         {% csrf_token %}
-        {{form|crispy}}
-        <p>Don't have an account ? Create One <a href="/register">here</a></p>
-        <button type="submit" class="btn btn-success">Login</button>
-       
+        {{ form|crispy }}
+        <button type="submit" class="btn btn-success" > Register</button>
     </form>
 {% endblock %}

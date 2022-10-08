@@ -1,0 +1,142 @@
+{% extends "main/base.html" %}
+
+{% block pagetitle%}
+<h1 class="mt-2">Users</h1>
+{% endblock %}
+{% block content %}
+        <div class="row">
+            <div class="col-9">
+                <div class="row">
+                    <div class="col-9">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">User Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Enabled</th>
+                                <th scope="col">Created Date</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for user in userlist %}
+                                <tr>
+                                    <td>{{user.username}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.is_active}}</td>
+                                    <td>{{user.date_joined}}</td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-success " data-toggle="modal" data-target="#notifyuser"> Update Users </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="notifyuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Update User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <form action="update" method="post">
+                                    {% csrf_token %}
+                                    <div class="modal-body">
+                                    
+                                        <div class="form-group row">
+                                            <label for="username" class="col-md-4 col-form-label">User Name</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" name="username" id="username" placeholder="User name">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="email" class="col-md-4 col-form-label">Email</label>
+                                            <div class="col-md-8">
+                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="userrole" class="col-md-4 col-form-label">user Role</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control" name="userrole" id="userrole">
+                                                    <option value="1">Admin</option>
+                                                    <option value="0">User</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="form-group row">
+                                            <label for="status" class="col-md-4 col-form-label">Status</label>
+                                            <div class="col-md-8">
+                                                <select class="form-control" name="status" id="status">
+                                                    <option value="1">Active</option>
+                                                    <option value="0">Deactive</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    
+                                    </div>
+                                    <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Update User</button>
+                                    </div>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-3">
+                  <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#config"> Configurations </button>
+
+                  <!-- Modal -->
+                    <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Change Configurations</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                            </div>
+                            <div class="modal-body">
+                                <form action="addserver" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-group row">
+                                        <label for="ip" class="col-md-4 col-form-label">Server IP</label>
+                                        <div class="col-md-8">
+                                            <input type="text" class="form-control" id="ip" name="ip" placeholder="Server IP">
+                                        </div>
+                                      </div>
+                                      <button type="submit" class="btn btn-success"> Add Server</button>
+                                </form>
+                                <table class="table">
+                                    <thead>
+                                      <tr>
+                                        <th scope="col">Server IP</th>
+                                        <th scope="col">Enabled</th>
+                                        <th scope="col">Created Date</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody>
+                                      
+                                    </tbody>
+                                  </table>
+
+                            </div>
+                            <div class="modal-footer">
+                                
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+
+                </div>
+              </div>
+
+            
+
+{% endblock %}

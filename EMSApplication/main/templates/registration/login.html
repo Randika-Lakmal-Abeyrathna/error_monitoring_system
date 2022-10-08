@@ -1,0 +1,24 @@
+{% extends "main/base.html" %}
+
+{% block pagetitle%}
+<h1 class="mt-2">Login</h1>
+{% endblock %}
+
+
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <form action="" method="post" class="form-group">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="username">User Name</label>
+            <input type="text" class="form-control" id="username" name="username">
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" class="form-control" id="password" name="password">
+          </div>
+        <button type="submit" class="btn btn-success">Login</button>
+       
+    </form>
+{% endblock %}
