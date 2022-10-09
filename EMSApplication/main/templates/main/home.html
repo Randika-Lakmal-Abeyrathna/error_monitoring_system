@@ -11,12 +11,18 @@
                     <thead>
                       <tr>
                         <th scope="col">Date</th>
-                        <th scope="col">Server</th>
-                        <th scope="col">Error</th>
+                        <th scope="col">Error Message</th>
+                        <th scope="col">Error Count</th>
                       </tr>
                     </thead>
                     <tbody>
-                      
+                      {% for err in error_list %}
+                          <tr>
+                            <td>{{err.date}}</td>
+                            <td>{{err.error_message}}</td>
+                            <td>{{err.count}}</td>
+                          </tr>
+                        {% endfor %}
                     </tbody>
                   </table>
             </div>

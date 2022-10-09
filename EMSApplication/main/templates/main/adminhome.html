@@ -4,10 +4,21 @@
 <h1 class="mt-2">Users</h1>
 {% endblock %}
 {% block content %}
+
+{% for message in messages %} 
+
+    <div class="alert {{ message.tags }} alert-dismissible fade show" role="alert">
+        {{message}}
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+{% endfor %}
+
         <div class="row">
-            <div class="col-7">
+            <div class="col-md-7">
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-md-9">
                         <table class="table">
                             <thead>
                               <tr>
@@ -29,7 +40,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-3">
                         <button type="button" class="btn btn-success " data-toggle="modal" data-target="#notifyuser"> Update Users </button>
 
                         <!-- Modal -->
@@ -89,9 +100,9 @@
                     </div>
                 </div>
             </div>
-            <div class="col-5">
+            <div class="col-md-5">
                 <div class="row">
-                    <div class="col-9">
+                    <div class="col-md-7">
                         <table class="table">
                             <thead>
                               <tr>
@@ -152,7 +163,7 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="col-3">
+                    <div class="col-md-4">
                         <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#config"> Configurations </button>
 
                         <!-- Modal -->

@@ -8,6 +8,8 @@ from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import get_user_model
 from .models import LogPath
+from .mainlogic import minlogic
+from django.contrib import messages
 
 
 # Create your views here.
@@ -17,9 +19,11 @@ def index (response):
         if response.user.is_superuser:
             return redirect(reverse('adminhome'))
         else:
+            error_list =minlogic.readfillelist()
             configlist = LogPath.objects.all()
             context= {
-                'configlist':configlist
+                'configlist':configlist,
+                'error_list':error_list
             }
             return render(response,"main/home.html",context)
 
@@ -59,6 +63,7 @@ def register(response):
                 form = RegisterUserForm(response.POST)
                 if form.is_valid():
                     form.save()
+                    messages.success(response,"User registered")
                     return redirect(reverse('adminhome'))
         
             else:
@@ -106,12 +111,13 @@ def updateUser(request):
             
             if user is not None:
                 if  request.user == user:
-                    print("cannot update loged account")
+                    messages.error(request,"Cannot Update Loged in User")
                 else:
                     user.email = email
                     user.is_superuser = userrole
                     user.is_active = status
                     user.save()
+                    messages.success(request,"User Updated")
     configlist = LogPath.objects.all()
     user = get_user_model()
     users = user.objects.all()
@@ -130,9 +136,8 @@ def addserver(request):
             logpath = LogPath.objects.get(path=path)
         except LogPath.DoesNotExist: 
             logpath= None
-        print(logpath)
         if logpath is not None:
-            print("Path Alrady exsists")
+            messages.error(request,"Path Alrady Exsists")
         else:
             newPath= LogPath()
             newPath.path= path
@@ -140,6 +145,7 @@ def addserver(request):
             newPath.user_id = request.user
 
             newPath.save()
+            messages.success(request,"New Ip Added")
 
     configlist = LogPath.objects.all()
     user = get_user_model()
@@ -165,6 +171,7 @@ def updateserver(request):
         if logpath is not None:
             logpath.enabled=status
             logpath.save()
+            messages.success(request,"IP Updated")
 
     configlist = LogPath.objects.all()
     user = get_user_model()
