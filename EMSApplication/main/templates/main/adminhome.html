@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
         <div class="row">
-            <div class="col-9">
+            <div class="col-7">
                 <div class="row">
                     <div class="col-9">
                         <table class="table">
@@ -27,7 +27,7 @@
                                 </tr>
                               {% endfor %}
                             </tbody>
-                          </table>
+                        </table>
                     </div>
                     <div class="col-3">
                         <button type="button" class="btn btn-success " data-toggle="modal" data-target="#notifyuser"> Update Users </button>
@@ -89,51 +89,102 @@
                     </div>
                 </div>
             </div>
-            <div class="col-3">
-                  <button type="button" class="btn btn-warning btn-block" data-toggle="modal" data-target="#config"> Configurations </button>
+            <div class="col-5">
+                <div class="row">
+                    <div class="col-9">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">IP</th>
+                                <th scope="col">Status</th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for config in configlist %}
+                                <tr>
+                                    <td>{{config.path}}</td>
+                                    <td>{{config.enabled}}</td>
+                                    <td></i><button type="button" class="btn" data-toggle="modal" data-target="#con{{config.id}}"><i class="fa-solid fa-pen-to-square"></i></button>
 
-                  <!-- Modal -->
-                    <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                            <h5 class="modal-title" id="exampleModalLongTitle">Change Configurations</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                            </div>
-                            <div class="modal-body">
-                                <form action="addserver" method="post">
-                                    {% csrf_token %}
-                                    <div class="form-group row">
-                                        <label for="ip" class="col-md-4 col-form-label">Server IP</label>
-                                        <div class="col-md-8">
-                                            <input type="text" class="form-control" id="ip" name="ip" placeholder="Server IP">
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="con{{config.id}}" role="dialog" aria-labelledby="updateConfig" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="updateConfig">Update</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="updateserver" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="form-group row">
+                                                            <label for="ip" class="col-md-4 col-form-label">Server IP</label>
+                                                            <div class="col-md-8">
+                                                                <input type="text" hidden name="ip"value="{{config.path}}">
+                                                                <input type="text" disabled class="form-control" id="ip" placeholder="Server IP" value="{{config.path}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="status" class="col-md-4 col-form-label">Status</label>
+                                                            <div class="col-md-8">
+                                                                <select class="form-control" name="status" id="status">
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Deactive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <button type="submit" class="btn btn-success"> Update IP</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    
+                                                </div>
+                                            </div>
+                                            </div>
                                         </div>
-                                      </div>
-                                      <button type="submit" class="btn btn-success"> Add Server</button>
-                                </form>
-                                <table class="table">
-                                    <thead>
-                                      <tr>
-                                        <th scope="col">Server IP</th>
-                                        <th scope="col">Enabled</th>
-                                        <th scope="col">Created Date</th>
-                                      </tr>
-                                    </thead>
-                                    <tbody>
-                                      
-                                    </tbody>
-                                  </table>
 
+                                    </td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#config"> Configurations </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Change Configurations</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="addserver" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group row">
+                                            <label for="ip" class="col-md-4 col-form-label">Server IP</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="ip" name="ip" placeholder="Server IP">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success"> Add Server</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    
+                                </div>
                             </div>
-                            <div class="modal-footer">
-                                
                             </div>
-                        </div>
                         </div>
                     </div>
-
+                </div>
                 </div>
               </div>
 

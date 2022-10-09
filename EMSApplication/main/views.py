@@ -17,7 +17,11 @@ def index (response):
         if response.user.is_superuser:
             return redirect(reverse('adminhome'))
         else:
-            return render(response,"main/home.html")
+            configlist = LogPath.objects.all()
+            context= {
+                'configlist':configlist
+            }
+            return render(response,"main/home.html",context)
 
     
 
@@ -72,10 +76,14 @@ def reset(response):
 
 @login_required(login_url='/')
 def adminhome(response):
+
+    configlist = LogPath.objects.all()
+
     user = get_user_model()
     users = user.objects.all()
     context= {
-        'userlist':users
+        'userlist':users,
+        'configlist':configlist
     }
     return render(response,"main/adminhome.html",context)
 
@@ -90,7 +98,7 @@ def updateUser(request):
             username=request.POST.get('username')
             email=request.POST.get('email')
             userrole=request.POST.get('userrole')
-            staus =request.POST.get('status') 
+            status =request.POST.get('status') 
             try:
                 user = get_user_model().objects.get(username=username)
             except get_user_model().DoesNotExist:
@@ -102,13 +110,14 @@ def updateUser(request):
                 else:
                     user.email = email
                     user.is_superuser = userrole
-                    user.is_active = staus
+                    user.is_active = status
                     user.save()
-
+    configlist = LogPath.objects.all()
     user = get_user_model()
     users = user.objects.all()
     context= {
-        'userlist':users
+        'userlist':users,
+        'configlist':configlist
     }
     return redirect(reverse('adminhome'),context)
 
@@ -132,10 +141,36 @@ def addserver(request):
 
             newPath.save()
 
-
+    configlist = LogPath.objects.all()
     user = get_user_model()
     users = user.objects.all()
     context= {
-        'userlist':users
+        'userlist':users,
+        'configlist':configlist
+    }
+    return redirect(reverse('adminhome'),context)
+
+
+@login_required(login_url='/')
+def updateserver(request):
+    if request.method == "POST":
+        path = request.POST.get('ip')
+        print(path)
+        status =request.POST.get('status')
+        try:
+            logpath = LogPath.objects.get(path=path)
+        except LogPath.DoesNotExist: 
+            logpath= None
+        
+        if logpath is not None:
+            logpath.enabled=status
+            logpath.save()
+
+    configlist = LogPath.objects.all()
+    user = get_user_model()
+    users = user.objects.all()
+    context= {
+        'userlist':users,
+        'configlist':configlist
     }
     return redirect(reverse('adminhome'),context)
