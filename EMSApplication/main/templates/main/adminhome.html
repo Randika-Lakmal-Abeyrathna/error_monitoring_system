@@ -18,28 +18,6 @@
         <div class="row">
             <div class="col-md-7">
                 <div class="row">
-                    <div class="col-md-9">
-                        <table class="table">
-                            <thead>
-                              <tr>
-                                <th scope="col">User Name</th>
-                                <th scope="col">Email</th>
-                                <th scope="col">Enabled</th>
-                                <th scope="col">Created Date</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              {% for user in userlist %}
-                                <tr>
-                                    <td>{{user.username}}</td>
-                                    <td>{{user.email}}</td>
-                                    <td>{{user.is_active}}</td>
-                                    <td>{{user.date_joined}}</td>
-                                </tr>
-                              {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
                     <div class="col-md-3">
                         <button type="button" class="btn btn-success " data-toggle="modal" data-target="#notifyuser"> Update Users </button>
 
@@ -99,10 +77,65 @@
                         </div>
                     </div>
                 </div>
+                <div class="row">
+                        <table class="table">
+                            <thead>
+                              <tr>
+                                <th scope="col">User Name</th>
+                                <th scope="col">Email</th>
+                                <th scope="col">Enabled</th>
+                                <th scope="col">Created Date</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {% for user in userlist %}
+                                <tr>
+                                    <td>{{user.username}}</td>
+                                    <td>{{user.email}}</td>
+                                    <td>{{user.is_active}}</td>
+                                    <td>{{user.date_joined}}</td>
+                                </tr>
+                              {% endfor %}
+                            </tbody>
+                        </table>
+                </div>
             </div>
             <div class="col-md-5">
                 <div class="row">
-                    <div class="col-md-7">
+                    <div class="col-md-4">
+                        <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#config"> Configurations </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Change Configurations</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="addserver" method="post">
+                                        {% csrf_token %}
+                                        <div class="form-group row">
+                                            <label for="ip" class="col-md-4 col-form-label">Server IP</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="ip" name="ip" placeholder="Server IP">
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-success"> Add Server</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
                         <table class="table">
                             <thead>
                               <tr>
@@ -162,39 +195,6 @@
                               {% endfor %}
                             </tbody>
                         </table>
-                    </div>
-                    <div class="col-md-4">
-                        <button type="button" class="btn btn-warning " data-toggle="modal" data-target="#config"> Configurations </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="config" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Change Configurations</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <div class="modal-body">
-                                    <form action="addserver" method="post">
-                                        {% csrf_token %}
-                                        <div class="form-group row">
-                                            <label for="ip" class="col-md-4 col-form-label">Server IP</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" id="ip" name="ip" placeholder="Server IP">
-                                            </div>
-                                        </div>
-                                        <button type="submit" class="btn btn-success"> Add Server</button>
-                                    </form>
-                                </div>
-                                <div class="modal-footer">
-                                    
-                                </div>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
                 </div>
               </div>

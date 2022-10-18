@@ -10,22 +10,73 @@ from django.contrib.auth import get_user_model
 from .models import LogPath
 from .mainlogic import minlogic
 from django.contrib import messages
+from datetime import date
+from dateutil.relativedelta import relativedelta
+import xlsxwriter
 
 
 # Create your views here.
 @login_required(login_url='login/')
-def index (response):
-    if response.user.is_authenticated:
-        if response.user.is_superuser:
+def index (request):
+    if request.user.is_authenticated:
+        if request.user.is_superuser:
             return redirect(reverse('adminhome'))
         else:
-            error_list =minlogic.readfillelist()
-            configlist = LogPath.objects.all()
+            if request.method == "POST":
+                fromdate = request.POST.get('fromdate')
+                todate  = request.POST.get('todate')
+                serverid = request.POST.get('serverid')
+
+                if fromdate =='':
+                    fromdate=date.today().strftime("%Y-%m-%d")
+                if todate =='':
+                    todate = date.today().strftime("%Y-%m-%d")
+                serverips =[]
+                if serverid == '0':
+                    serverips = LogPath.objects.filter(enabled =True)
+                else:
+                    serverips=LogPath.objects.get(id=serverid)
+                
+                if 'export' in request.POST:
+                    error_list =minlogic.readfillelist(fromdate,todate,serverips,serverid)
+                    if len(error_list) >0:
+                        minlogic.exportFile(error_list)
+                        messages.success(request,"File Exported")
+                    else:
+                        messages.error(request,"No Data to Export")
+                    configlist = LogPath.objects.filter(enabled =True)
+                    context= {
+                        'configlist':configlist,
+                        'error_list':error_list,
+                        'fromdate':fromdate,
+                        'todate':todate
+                    }
+                    
+                    return render(request,"main/home.html",context)
+                else:
+                    error_list =minlogic.readfillelist(fromdate,todate,serverips,serverid)
+                    configlist = LogPath.objects.filter(enabled =True)
+                    context= {
+                        'configlist':configlist,
+                        'error_list':error_list,
+                        'fromdate':fromdate,
+                        'todate':todate
+                    }
+                    
+                    return render(request,"main/home.html",context)
+
+            fromdate = (date.today() - relativedelta(months=1)).strftime("%Y-%m-%d")
+            todate =date.today().strftime("%Y-%m-%d")
+            configlist = LogPath.objects.filter(enabled =True)
+            error_list =minlogic.readfillelist(fromdate,todate,configlist,'0')
+            # minlogic.exportFile(minlogic,fromdate,todate,configlist,'0')
             context= {
                 'configlist':configlist,
-                'error_list':error_list
+                'error_list':error_list,
+                'fromdate':fromdate,
+                'todate':todate
             }
-            return render(response,"main/home.html",context)
+            return render(request,"main/home.html",context)
 
     
 
@@ -131,6 +182,7 @@ def updateUser(request):
 def addserver(request):
     if request.method == "POST":
         path = request.POST.get('ip')
+        path = path.replace("\\","//")
         print(path)
         try:
             logpath = LogPath.objects.get(path=path)
@@ -173,7 +225,7 @@ def updateserver(request):
             logpath.save()
             messages.success(request,"IP Updated")
 
-    configlist = LogPath.objects.all()
+    configlist = LogPath.objects.get(enabled =True)
     user = get_user_model()
     users = user.objects.all()
     context= {
@@ -181,3 +233,24 @@ def updateserver(request):
         'configlist':configlist
     }
     return redirect(reverse('adminhome'),context)
+
+
+@login_required(login_url='/')
+def sendEmail(request):
+    if request.method == "POST":
+        emails =request.POST.get('emails')
+        content =request.POST.get('content')
+        print(emails)
+        if emails =='':
+            messages.error(request,"Email address Cannot Be empty")
+        elif content == '':
+            messages.error(request,"Email Content Cannot Be empty")
+        else:
+            filterEmails = emails.split(',')
+            print(filterEmails)
+            minlogic.sendEmail(filterEmails,content)
+            messages.success(request,"Email Sent")
+        
+    
+    return redirect(reverse('home'))
+

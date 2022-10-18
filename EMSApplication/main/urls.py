@@ -12,5 +12,6 @@ urlpatterns =[
     path('adminhome/update',views.updateUser,name="updateUser"),
     path('adminhome/addserver',views.addserver,name="addserver"),
     path('adminhome/updateserver',views.updateserver,name="updateserver"),
-
+    path('sendEmail',views.sendEmail,name="sendEmail"),
+    
 ]
