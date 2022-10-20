@@ -22,8 +22,8 @@ class minlogic :
     def sendEmail(to,content):
         mail_content = content
         
-        sender_address = 'randika.help@gmail.com'
-        sender_pass = 'euqqowwthnhdfeam'
+        sender_address = ''
+        sender_pass = ''
         
         message = MIMEMultipart()
         message['From'] = sender_address
@@ -139,8 +139,8 @@ class minlogic :
     def resetPasswordEmail(to,content):
         mail_content = 'New password is '+content
         
-        sender_address = 'randika.help@gmail.com'
-        sender_pass = 'euqqowwthnhdfeam'
+        sender_address = ''
+        sender_pass = ''
         
         message = MIMEMultipart()
         message['From'] = sender_address
