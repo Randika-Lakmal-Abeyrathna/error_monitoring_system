@@ -27,6 +27,7 @@
                 {% if user.is_superuser%}
                 <span><a class="hello" href="{% url 'register' %}">Register</a></span>
                 {% endif %}
+                <span><a class="hello" href="{% url 'changepassword' %}">Change Password</a></span>
                 <span><a class="hello" href="{% url 'logoutUser' %}">Logout</a></span>
             </div>
             {% endif %}

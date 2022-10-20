@@ -2,7 +2,7 @@ from multiprocessing import context
 from django.shortcuts import render, redirect
 from django.contrib.auth import login,authenticate,logout
 from django.contrib.auth.forms import UserCreationForm
-from .forms import RegisterUserForm
+from .forms import RegisterUserForm,SetPasswordForm
 from django.http import HttpResponsePermanentRedirect
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
@@ -102,7 +102,8 @@ def loginUser(response):
                 else:
                     login(response,user)
                     return redirect(reverse('home'))
-
+            else:
+                messages.error(response,"Invalid User name / Password")
 
         return render(response,"registration/login.html")
 
@@ -127,6 +128,27 @@ def register(response):
     
 
 def reset(response):
+    if response.method =="POST":
+        username=response.POST.get('username')
+        print("In reset password")
+        print(username)
+        try:
+            user = get_user_model().objects.get(username=username)
+        except get_user_model().DoesNotExist:
+            user= None
+            
+        if user is not None:
+            newpassword =minlogic.genratepassword()
+            print(newpassword)
+            print(user.email)
+            minlogic.resetPasswordEmail(user.email,newpassword)
+            user.set_password(newpassword)
+            user.save()
+            messages.success(response,"Password Changed. Please check your email")
+            return redirect(reverse('loginUser'))
+        else:
+            messages.error(response,"Invalid User name")
+
     return render(response,"main/resetpassword.html")
 
 
@@ -225,7 +247,7 @@ def updateserver(request):
             logpath.save()
             messages.success(request,"IP Updated")
 
-    configlist = LogPath.objects.get(enabled =True)
+    configlist = LogPath.objects.all()
     user = get_user_model()
     users = user.objects.all()
     context= {
@@ -253,4 +275,23 @@ def sendEmail(request):
         
     
     return redirect(reverse('home'))
+
+@login_required(login_url='/')
+def changepassword(request):
+    user = request.user
+
+    if request.method == 'POST':
+        form = SetPasswordForm(user,request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,"Your Password has been changed")
+            return redirect(reverse('loginUser'))
+        else:
+            for error in list(form.errors.values()):
+                messages.error(request,error)
+
+    context= {
+        'form':SetPasswordForm(user)
+    }
+    return render(request,"main/changePassword.html",context) 
 

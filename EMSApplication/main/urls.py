@@ -13,5 +13,6 @@ urlpatterns =[
     path('adminhome/addserver',views.addserver,name="addserver"),
     path('adminhome/updateserver',views.updateserver,name="updateserver"),
     path('sendEmail',views.sendEmail,name="sendEmail"),
+    path('changepassword',views.changepassword,name="changepassword"),
     
 ]

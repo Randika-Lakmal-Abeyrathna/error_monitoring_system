@@ -15,6 +15,8 @@ import glob
 from os.path import exists
 import tkinter as tk
 from tkinter import filedialog
+import random
+import string
 
 class minlogic :
     def sendEmail(to,content):
@@ -22,7 +24,6 @@ class minlogic :
         
         sender_address = 'randika.help@gmail.com'
         sender_pass = 'euqqowwthnhdfeam'
-        receiver_address = 'randika.l.abeyrathna@gmail.com'
         
         message = MIMEMultipart()
         message['From'] = sender_address
@@ -128,3 +129,29 @@ class minlogic :
         writer = pd.ExcelWriter(file_path+"//"+'export.xlsx', engine='xlsxwriter')
         df.to_excel(writer, sheet_name='Error Summary', index=False)
         writer.save()
+
+    def genratepassword():
+        source = string.ascii_letters + string.digits
+        result_str = ''.join((random.choice(source) for i in range(8)))
+        return result_str
+
+    
+    def resetPasswordEmail(to,content):
+        mail_content = 'New password is '+content
+        
+        sender_address = 'randika.help@gmail.com'
+        sender_pass = 'euqqowwthnhdfeam'
+        
+        message = MIMEMultipart()
+        message['From'] = sender_address
+        message['To'] = "," .join(to)
+        message['Subject'] = 'Password Reset'   #The subject line
+        
+        message.attach(MIMEText(mail_content, 'plain'))
+        
+        session = smtplib.SMTP('smtp.gmail.com', 587) 
+        session.starttls() 
+        session.login(sender_address, sender_pass) 
+        text = message.as_string()
+        session.sendmail(sender_address, to, text)
+        session.quit()
