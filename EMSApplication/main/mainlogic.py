@@ -22,8 +22,8 @@ class minlogic :
     def sendEmail(to,content):
         mail_content = content
         
-        sender_address = ''
-        sender_pass = ''
+        sender_address = 'randika.help@gmail.com'
+        sender_pass = 'euqqowwthnhdfeam'
         
         message = MIMEMultipart()
         message['From'] = sender_address
@@ -58,7 +58,8 @@ class minlogic :
         for ip in pathlist:
             print(ip.path)
             path = ip.path
-            aligibale_file_list =[]
+            pathName = ip.name
+            print(pathName)
             for x in os.listdir(path):
                 if x.endswith(".log") & x.startswith("laravel"):
                     # Prints only text file present in My Folder
@@ -69,55 +70,49 @@ class minlogic :
                     file_date1 = datetime.strptime(str(date1),"%Y-%m-%d")
                     file_date2 = datetime.strptime(str(date2),"%Y-%m-%d")
                     if  file_date1 <= file_date  <= file_date2:
-                        aligibale_file_list.append(x)
-
-            
-            # print(aligibale_file_list)
-            for file in aligibale_file_list:
-                # print(file)
-                with open(path+"//"+file,'r') as f:
-                    lines = f.readlines()
-                    count = 0
-                    # Strips the newline character
-                    for line in lines:
-                        if "production.ERROR" in line.strip():
-                            error_message = line.strip()
-                            error_message_parts = line.strip().split('production.ERROR')
-                            error_dateTime = error_message_parts[0]
-                            error_message_content = error_message_parts[1].split(':')[1]
-                            error_date = error_dateTime.split(" ")[0].replace('[',"")
-                            # print(error_date)
-                            
-                            if len(error_list):
-                                flag =False
-                                for err in error_list:
-                                    if (err["date"] == error_date) & (err["error_message"] == error_message_content):
-                                        err["error_time"].append(error_dateTime)
-                                        err["count"] += 1
-                                        flag=True
-                                        break
+                        with open(path+"//"+x,'r') as f:
+                            lines = f.readlines()
+                            count = 0
+                            # Strips the newline character
+                            for line in lines:
+                                if "production.ERROR" in line.strip():
+                                    error_message = line.strip()
+                                    error_message_parts = line.strip().split('production.ERROR')
+                                    error_dateTime = error_message_parts[0]
+                                    error_message_content = error_message_parts[1].split(':')[1]
+                                    error_date = error_dateTime.split(" ")[0].replace('[',"")
+                                    # print(error_date)
+                                    
+                                    if len(error_list):
+                                        flag =False
+                                        for err in error_list:
+                                            if (err["date"] == error_date) & (err["error_message"] == error_message_content) & (err["server_name"] == pathName):
+                                                err["error_time"].append(error_dateTime)
+                                                err["count"] += 1
+                                                flag=True
+                                                break
+                                            else:
+                                                flag=False
+                                        
+                                        if not flag:
+                                            log_error ={
+                                            "date":error_date,
+                                            "error_time": [error_dateTime],
+                                            "error_message":error_message_content,
+                                            "server_name":pathName,
+                                            "count":1
+                                            }
+                                            error_list.append(log_error)
+                                        
                                     else:
-                                        flag=False
-                                
-                                if not flag:
-                                    log_error ={
-                                    "date":error_date,
-                                    "error_time": [error_dateTime],
-                                    "error_message":error_message_content,
-                                    "count":1
-                                    }
-                                    error_list.append(log_error)
-                                
-                            else:
-                                log_error ={
-                                    "date":error_date,
-                                    "error_time": [error_dateTime],
-                                    "error_message":error_message_content,
-                                    "count":1
-                                }
-                                error_list.append(log_error)
-
-                        
+                                        log_error ={
+                                            "date":error_date,
+                                            "error_time": [error_dateTime],
+                                            "error_message":error_message_content,
+                                            "server_name":pathName,
+                                            "count":1
+                                        }
+                                        error_list.append(log_error)
         
         return error_list
 
@@ -139,8 +134,8 @@ class minlogic :
     def resetPasswordEmail(to,content):
         mail_content = 'New password is '+content
         
-        sender_address = ''
-        sender_pass = ''
+        sender_address = 'randika.help@gmail.com'
+        sender_pass = 'euqqowwthnhdfeam'
         
         message = MIMEMultipart()
         message['From'] = sender_address

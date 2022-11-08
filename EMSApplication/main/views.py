@@ -204,6 +204,7 @@ def updateUser(request):
 def addserver(request):
     if request.method == "POST":
         path = request.POST.get('ip')
+        name = request.POST.get('name')
         path = path.replace("\\","//")
         print(path)
         try:
@@ -216,6 +217,7 @@ def addserver(request):
             newPath= LogPath()
             newPath.path= path
             newPath.enabled =1
+            newPath.name=name
             newPath.user_id = request.user
 
             newPath.save()
@@ -237,6 +239,7 @@ def updateserver(request):
         path = request.POST.get('ip')
         print(path)
         status =request.POST.get('status')
+        name= request.POST.get('name')
         try:
             logpath = LogPath.objects.get(path=path)
         except LogPath.DoesNotExist: 
@@ -244,6 +247,7 @@ def updateserver(request):
         
         if logpath is not None:
             logpath.enabled=status
+            logpath.name=name
             logpath.save()
             messages.success(request,"IP Updated")
 

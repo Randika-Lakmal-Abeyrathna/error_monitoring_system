@@ -17,67 +17,6 @@
 
         <div class="row">
             <div class="col-md-7">
-                <div class="row">
-                    <div class="col-md-3">
-                        <button type="button" class="btn btn-success " data-toggle="modal" data-target="#notifyuser"> Update Users </button>
-
-                        <!-- Modal -->
-                        <div class="modal fade" id="notifyuser" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-                            <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                <h5 class="modal-title" id="exampleModalLongTitle">Update User</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                </button>
-                                </div>
-                                <form action="update" method="post">
-                                    {% csrf_token %}
-                                    <div class="modal-body">
-                                    
-                                        <div class="form-group row">
-                                            <label for="username" class="col-md-4 col-form-label">User Name</label>
-                                            <div class="col-md-8">
-                                                <input type="text" class="form-control" name="username" id="username" placeholder="User name">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="email" class="col-md-4 col-form-label">Email</label>
-                                            <div class="col-md-8">
-                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email">
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="userrole" class="col-md-4 col-form-label">user Role</label>
-                                            <div class="col-md-8">
-                                                <select class="form-control" name="userrole" id="userrole">
-                                                    <option value="1">Admin</option>
-                                                    <option value="0">User</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <div class="form-group row">
-                                            <label for="status" class="col-md-4 col-form-label">Status</label>
-                                            <div class="col-md-8">
-                                                <select class="form-control" name="status" id="status">
-                                                    <option value="1">Active</option>
-                                                    <option value="0">Deactive</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    
-                                    </div>
-                                    <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="submit" class="btn btn-primary">Update User</button>
-                                    </div>
-                                </form>
-                            </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
                         <table class="table">
                             <thead>
                               <tr>
@@ -94,11 +33,72 @@
                                     <td>{{user.email}}</td>
                                     <td>{{user.is_active}}</td>
                                     <td>{{user.date_joined}}</td>
+                                    <td></i><button type="button" class="btn" data-toggle="modal" data-target="#user{{user.id}}"><i class="fa-solid fa-pen-to-square"></i></button>
+
+                                        <!-- Modal -->
+                                        <div class="modal fade" id="user{{user.id}}" role="dialog" aria-labelledby="updateUser" aria-hidden="true">
+                                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                <h5 class="modal-title" id="updateUser">Update User</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form action="update" method="post">
+                                                        {% csrf_token %}
+                                                        <div class="form-group row">
+                                                            <label for="username" class="col-md-4 col-form-label">User Name</label>
+                                                            <div class="col-md-8">
+                                                                <input type="hidden" name="username" value="{{user.username}}">
+                                                                <input type="text" class="form-control"  id="username" disabled value="{{user.username}}" placeholder="User name">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="email" class="col-md-4 col-form-label">Email</label>
+                                                            <div class="col-md-8">
+                                                                <input type="email" class="form-control" name="email" id="email" placeholder="Email" value="{{user.email}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="userrole" class="col-md-4 col-form-label">user Role</label>
+                                                            <div class="col-md-8">
+                                                                <select class="form-control" name="userrole" id="userrole">
+                                                                    <option value="1">Admin</option>
+                                                                    <option value="0">User</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="status" class="col-md-4 col-form-label">Status</label>
+                                                            <div class="col-md-8">
+                                                                <select class="form-control" name="status" id="status">
+                                                                    <option value="1">Active</option>
+                                                                    <option value="0">Deactive</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" class="btn btn-primary">Update User</button>
+                                                    </form>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </div>
+
+                                    </td>
+
                                 </tr>
                               {% endfor %}
                             </tbody>
                         </table>
-                </div>
             </div>
             <div class="col-md-5">
                 <div class="row">
@@ -124,6 +124,12 @@
                                                 <input type="text" class="form-control" id="ip" name="ip" placeholder="Server IP">
                                             </div>
                                         </div>
+                                        <div class="form-group row">
+                                            <label for="name" class="col-md-4 col-form-label">Server Name</label>
+                                            <div class="col-md-8">
+                                                <input type="text" class="form-control" id="name" name="name" placeholder="Server Name">
+                                            </div>
+                                        </div>
                                         <button type="submit" class="btn btn-success"> Add Server</button>
                                     </form>
                                 </div>
@@ -140,6 +146,7 @@
                             <thead>
                               <tr>
                                 <th scope="col">IP</th>
+                                <th scope="col">Name</th>
                                 <th scope="col">Status</th>
                                 <th scope="col"></th>
                               </tr>
@@ -148,6 +155,7 @@
                               {% for config in configlist %}
                                 <tr>
                                     <td>{{config.path}}</td>
+                                    <td>{{config.name}}</td>
                                     <td>{{config.enabled}}</td>
                                     <td></i><button type="button" class="btn" data-toggle="modal" data-target="#con{{config.id}}"><i class="fa-solid fa-pen-to-square"></i></button>
 
@@ -169,6 +177,12 @@
                                                             <div class="col-md-8">
                                                                 <input type="text" hidden name="ip"value="{{config.path}}">
                                                                 <input type="text" disabled class="form-control" id="ip" placeholder="Server IP" value="{{config.path}}">
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label for="name" class="col-md-4 col-form-label">Server Name</label>
+                                                            <div class="col-md-8">
+                                                                <input type="text" class="form-control" name="name" value="{{config.name}}">
                                                             </div>
                                                         </div>
                                                         <div class="form-group row">
