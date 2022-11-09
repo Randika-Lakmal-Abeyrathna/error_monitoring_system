@@ -1,7 +1,7 @@
 {% extends "main/base.html" %}
 
 {% block pagetitle%}
-<h1 class="mt-2">Users</h1>
+<h1 class="mt-2">Admin Dashboard</h1>
 {% endblock %}
 {% block content %}
 
@@ -22,6 +22,7 @@
                               <tr>
                                 <th scope="col">User Name</th>
                                 <th scope="col">Email</th>
+                                <th scope="col">Type</th>
                                 <th scope="col">Enabled</th>
                                 <th scope="col">Created Date</th>
                               </tr>
@@ -31,6 +32,12 @@
                                 <tr>
                                     <td>{{user.username}}</td>
                                     <td>{{user.email}}</td>
+                                    {% if user.is_superuser == 1 %}
+                                    <td>Admin</td>
+                                    {% else %}
+                                    <td>User</td>
+                                    {% endif %}
+
                                     <td>{{user.is_active}}</td>
                                     <td>{{user.date_joined}}</td>
                                     <td></i><button type="button" class="btn" data-toggle="modal" data-target="#user{{user.id}}"><i class="fa-solid fa-pen-to-square"></i></button>
